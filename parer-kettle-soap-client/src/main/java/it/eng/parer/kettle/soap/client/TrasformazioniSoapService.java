@@ -52,6 +52,7 @@ public interface TrasformazioniSoapService {
      *            nome <em>univoco</em> della trasformazione
      * @param parametri
      *            della trasformazioni (definiti sul repository kettle)
+     * 
      * @return Esito dell'avvenuto lancio della trasformazione
      */
     @WebResult(name = "Esito")
@@ -65,6 +66,7 @@ public interface TrasformazioniSoapService {
      *
      * @param kettleJob
      *            parametro obbligatorio
+     * 
      * @return Esito dell'inserimento
      */
     @WebResult(name = "EsitoJob")
@@ -75,6 +77,7 @@ public interface TrasformazioniSoapService {
      *
      * @param kettleTrasformation
      *            parametro obbligatorio
+     * 
      * @return Esito dell'inserimento
      */
     @WebResult(name = "EsitoTransformation")
@@ -86,6 +89,7 @@ public interface TrasformazioniSoapService {
      *
      * @param nomeCartella
      *            nome della cartella/trasformazione
+     * 
      * @return Esito dell'inserimento
      */
     @WebResult(name = "EsitoCartella")
@@ -97,6 +101,7 @@ public interface TrasformazioniSoapService {
      *
      * @param nomeCartella
      *            nome della cartella/trasformazione
+     * 
      * @return Esito della cancellazione
      */
     @WebResult(name = "EsitoCartella")
@@ -108,6 +113,7 @@ public interface TrasformazioniSoapService {
      *
      * @param nomeTrasformazione
      *            nome della trasformazione/cartella.
+     * 
      * @return Lista dei parametri associati alla trasformazione/cartella.
      */
     @WebResult(name = "EsitoListaParametri")
@@ -119,6 +125,7 @@ public interface TrasformazioniSoapService {
      *
      * @param nomeCartella
      *            nome della trasformazione/cartella.
+     * 
      * @return esitenza della cartella
      */
     @WebResult(name = "EsitoEsitenzaCartella")
@@ -130,6 +137,7 @@ public interface TrasformazioniSoapService {
      * @param startDate
      * @param endDate
      * @param numResults
+     * 
      * @return
      */
     @WebResult(name = "EsitoStatusCodaTrasformazione")

@@ -38,8 +38,10 @@ public interface GestoreTrasformazioni {
      *
      * @param trasformazione
      *            <em>Trasformazione</em> intesa nel gergo RER.
+     * 
      * @throws TrasformazioneException
      *             Il messaggio contiene la causa dell'eccezione.
+     * 
      * @return si può avviare una trasformazione oppure no?
      */
     public boolean possoEseguireTrasformazione(Trasformazione trasformazione) throws TrasformazioneException;
@@ -58,6 +60,7 @@ public interface GestoreTrasformazioni {
      *
      * @param job
      *            nel gergo di Pentaho
+     * 
      * @throws KettleCrudException
      *             Il messaggio contiene la causa dell'eccezione.
      */
@@ -68,6 +71,7 @@ public interface GestoreTrasformazioni {
      *
      * @param transformation
      *            nel gergo di Pentaho
+     * 
      * @throws KettleCrudException
      *             Il messaggio contiene la causa dell'eccezione.
      */
@@ -78,6 +82,7 @@ public interface GestoreTrasformazioni {
      *
      * @param nomeCartella
      *            nome della cartella associata alla <em>Trasformazione</em>.
+     * 
      * @throws KettleCrudException
      *             Il messaggio contiene la causa dell'eccezione.
      */
@@ -88,6 +93,7 @@ public interface GestoreTrasformazioni {
      *
      * @param nomeCartella
      *            nome della catella da associare alla <em>Trasformazione</em>.
+     * 
      * @throws KettleCrudException
      *             Il messaggio contiene la causa dell'eccezione.
      */
@@ -98,6 +104,7 @@ public interface GestoreTrasformazioni {
      *
      * @param nomeTrasformazione
      *            nome della <em>Trasformazione</em> .
+     * 
      * @return la lista dei parametri della <em>Trasformazione</em> identificata dal nome <tt>nomeTrasformazione</tt>
      *         oppure null.
      */
@@ -107,6 +114,7 @@ public interface GestoreTrasformazioni {
      * Controlla l'esistenza di una determninata cartella nel repository di kettle
      * 
      * @param nomeCartella
+     * 
      * @return esistenza cartella
      */
     public boolean esistenzaCartella(String nomeCartella);

@@ -265,7 +265,7 @@
         </dependency>
         <dependency>
             <groupId>com.oracle</groupId>
-            <artifactId>ojdbc8</artifactId>
+            <artifactId>ojdbc16</artifactId>
         </dependency>
         
         <!-- per passaggio a java 11 -->

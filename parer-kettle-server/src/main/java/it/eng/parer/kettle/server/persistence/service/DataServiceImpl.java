@@ -414,6 +414,7 @@ public class DataServiceImpl implements DataService {
      *
      * @param name
      *            string to check
+     * 
      * @return true if name is a valid Name
      */
     private boolean isValidName(String name) {

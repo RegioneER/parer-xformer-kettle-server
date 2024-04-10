@@ -41,6 +41,7 @@ public interface DataService {
      *
      * @param trasformazione
      *            <em>Trasformazione</em> RER.
+     * 
      * @throws TrasformazioneException
      *             nel caso in cui il pig object sia già stato da un'altra chiamata.
      */
@@ -51,6 +52,7 @@ public interface DataService {
      *
      * @param trasformazione
      *            <em>Trasformazione</em> RER.
+     * 
      * @throws TrasformazioneException
      *             nel caso in cui la Trasformazione non sia stata precedentemente censita.
      */
@@ -61,6 +63,7 @@ public interface DataService {
      *
      * @param trasformazione
      *            <em>Trasformazione</em> RER.
+     * 
      * @throws TrasformazioneException
      *             nel caso in cui la Trasformazione non sia stata precedentemente censita.
      */
@@ -74,6 +77,7 @@ public interface DataService {
      *            <em>Trasformazione</em> RER.
      * @param messaggio
      *            eventuale eccezione esterna. Il metodo gestisce il caso in cui il messaggio sia nullo
+     * 
      * @throws TrasformazioneException
      *             nel caso in cui la Trasformazione non sia stata precedentemente censita.
      */
@@ -99,6 +103,7 @@ public interface DataService {
      *
      * @param nomeParametro
      *            nome del parametro di configurazione.
+     * 
      * @return valore del parametro di configurazione.
      */
     public String ottieniParametroConfigurazione(String nomeParametro);
@@ -107,6 +112,7 @@ public interface DataService {
      * Genera il report della trasformazione.
      * 
      * @param trasformazione
+     * 
      * @return un xml contenente il report di trasformazione
      */
     public String generaReport(Trasformazione trasformazione);
