@@ -23,10 +23,6 @@
             <id>github</id>
             <url>https://maven.pkg.github.com/RegioneER/parer-framework-parerpom</url>           
         </repository>      
-        <repository>
-			<id>pentaho</id>
-			<url>https://repo.orl.eng.hitachivantara.com/ui/native/pnt-mvn</url>
-		</repository>            
      </repositories>
 
     <scm>
