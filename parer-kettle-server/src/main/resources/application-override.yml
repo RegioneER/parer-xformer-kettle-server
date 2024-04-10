@@ -1,0 +1,37 @@
+# APPLICATION BASE (ereditato da tutti)
+server:
+  session:
+    cookie:
+      secure: true
+  error:
+    whitelabel:
+      enabled: true
+  servlet: 
+    context-path: /kettle-server
+    
+# JNDI del data source 
+jndi:
+    kettle_ds: java:comp/env/jdbc/KettleDs
+    kettle_lite_ds: java:comp/env/jdbc/KettleLiteDs
+
+config:
+    instance_name: istanza di test
+    repo_name: Xformer test repository
+    repo_desc: Xformer test repository description
+    repo_user: xxxxxxxxx
+    repo_pwd: xxxxxxxxx
+    url_ws_notifica: https://parer-snap.ente.regione.emr.it/sacerping/NotificaOggettoTrasformato
+    user_ws_notifica: xxxxxxxxxxxxxx
+    psw_ws_notifica: xxxxxxxx
+    timeout_ws_notifica: 600000
+    plugin_folder_path: /opt/pentaho/7.0.0.0-25/plugins/
+    
+    object_storage:
+        url: https://parersgs3.ente.regione.emr.it:8082
+        access_key: xxxxxxxxxxxxxxxxx
+        secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    
+# Concorrenza
+transformation:
+    concurrency: 3
+    queue: 10

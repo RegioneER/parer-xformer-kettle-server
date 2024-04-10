@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Pagina principale di KETTLE SERVER</title>
+        <script>
+            function loadAppVersion() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        document.getElementById("version").innerHTML = "Versione: " + JSON.parse(this.responseText).versione;
+                    }
+                };
+                xhttp.open("GET", "services/rest/v1/versione", true);
+                xhttp.send();
+            }
+        </script>
+    </head>
+    <body onload="loadAppVersion()">
+        <header>
+            <nav>
+                <ul>
+                    <li>Home</li>
+                </ul>
+            </nav>
+        </header>
+        <section>
+            <h1> Note generali</h1>
+            <article>
+                <header>
+                    <h2>Nota Importante sull'Audit Trail Oracle</h2>
+                    <p>Informazione ottenuta in data <time datetime="2018-03-08T11:28:24+02:00">8 marzo 2018</time></p>
+                </header>
+                <p>Quando andremo in produzione con questa applicazione bisognerà notificare <em>assolutamente</em> i DBA relativamente all'audit trail per il datasource kettle.</p>
+            </article>
+            <article>
+                <header>
+                    <h2>Servizi esposti</h2>
+                    <p>Lista dei servizi esposti dall'applicazione</p>
+                </header>
+                <p><a href="/kettle-server/services" title="Servizi SOAP">Servizi esposti</a>
+            </article>
+        </section>
+
+        <aside>
+            <h2>About</h2>
+            <p>Questo documento serve come promemoria</p>
+        </aside>
+
+        <footer>
+            <p>Copyright 2018 Engineering Ingegneria Informatica</p>
+            <p id="version">Versione: non definita</p>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/kettle-server">
+  <ResourceLink auth="Container" global="jdbc/KettleDs" name="jdbc/KettleDs" type="javax.sql.DataSource"/>
+  <ResourceLink auth="Container" global="jdbc/KettleLiteDs" name="jdbc/KettleLiteDs" type="javax.sql.DataSource"/>
+</Context>

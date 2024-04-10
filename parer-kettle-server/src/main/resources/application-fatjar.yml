@@ -1,0 +1,8 @@
+server:
+    port: 8080
+    address: 0.0.0.0
+    error:
+        include-exception: true
+        include-stacktrace: always
+    tomcat:
+        basedir: kettle-server

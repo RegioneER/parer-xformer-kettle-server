@@ -1,0 +1,38 @@
+@startuml
+annotation java.lang.Override
+annotation javax.xml.bind.annotation.XmlAccessorType
+annotation javax.xml.bind.annotation.XmlElement
+annotation javax.xml.bind.annotation.XmlRootElement
+class it.eng.parer.kettle.model.Cartella
+class it.eng.parer.kettle.model.Esito
+class it.eng.parer.kettle.model.Job
+class it.eng.parer.kettle.model.Monitoraggio
+class it.eng.parer.kettle.model.Parametro
+class it.eng.parer.kettle.model.Stato
+class it.eng.parer.kettle.model.Trasformazione
+class java.util.ArrayList
+class java.util.List
+class javax.activation.DataHandler
+class javax.xml.bind.annotation.XmlAccessType
+interface java.io.Serializable
+it.eng.parer.kettle.model.Cartella --|> java.io.Serializable
+it.eng.parer.kettle.model.Esito ..> javax.xml.bind.annotation.XmlAccessorType
+it.eng.parer.kettle.model.Esito ..> javax.xml.bind.annotation.XmlElement
+it.eng.parer.kettle.model.Esito ..> javax.xml.bind.annotation.XmlRootElement
+it.eng.parer.kettle.model.Esito ..> java.util.ArrayList
+it.eng.parer.kettle.model.Esito ..> java.util.List
+it.eng.parer.kettle.model.Esito ..> javax.xml.bind.annotation.XmlAccessType
+it.eng.parer.kettle.model.Esito --|> java.io.Serializable
+it.eng.parer.kettle.model.Job ..> javax.activation.DataHandler
+it.eng.parer.kettle.model.Job --|> java.io.Serializable
+it.eng.parer.kettle.model.Monitoraggio ..> java.lang.Override
+it.eng.parer.kettle.model.Parametro ..> java.lang.Override
+it.eng.parer.kettle.model.Parametro ..> javax.xml.bind.annotation.XmlAccessorType
+it.eng.parer.kettle.model.Parametro ..> javax.xml.bind.annotation.XmlElement
+it.eng.parer.kettle.model.Parametro ..> javax.xml.bind.annotation.XmlRootElement
+it.eng.parer.kettle.model.Parametro ..> javax.xml.bind.annotation.XmlAccessType
+it.eng.parer.kettle.model.Parametro --|> java.io.Serializable
+it.eng.parer.kettle.model.Stato --|> java.io.Serializable
+it.eng.parer.kettle.model.Trasformazione ..> java.util.List
+it.eng.parer.kettle.model.Trasformazione --|> java.io.Serializable
+@enduml

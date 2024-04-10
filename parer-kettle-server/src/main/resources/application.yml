@@ -1,0 +1,55 @@
+# APPLICATION BASE (ereditato da tutti)
+server:
+  session:
+    cookie:
+      secure: true
+  error:
+    whitelabel:
+      enabled: true
+  servlet: 
+    context-path: /kettle-server
+    
+# JNDI del data source 
+jndi:
+    kettle_ds: java:comp/env/jdbc/KettleDs
+    kettle_lite_ds: java:comp/env/jdbc/KettleLiteDs
+
+config:
+    # configurazione repository kettle
+    instance_name: istanza di test
+    repo_name: Xformer test repository
+    repo_desc: Xformer test repository description
+    repo_user: admin
+    repo_pwd: admin
+    # configurazione webservice di notifica oggetto di preingest
+    url_ws_notifica: https://parer-snap.ente.regione.emr.it/sacerping/NotificaOggettoTrasformato
+    user_ws_notifica: automa_TRASFORMAZIONE_OGGETTO
+    psw_ws_notifica: Sat3im34/
+    timeout_ws_notifica: 600000
+    plugin_folder_path: /opt/pentaho/9.4.0.1-467/plugins/
+    
+    # configurazione accesso al server Object Storage
+    object_storage:
+        enabled: true
+        url: https://parersgs3.ente.regione.emr.it:8082
+        access_key: 3O9N4T5P8RR8CVRSF12J
+        secret: PkvfCX4pZ/sKjYeOYEbF5q7Sj18h7GYv1TdV6Bh2
+    
+# Concorrenza
+transformation:
+    concurrency: 3
+    queue: 10
+
+#Informazioni da filtrare
+application:
+    name: ${project.artifactId}
+build:
+    version: ${project.version}
+    timestamp: ${maven.build.timestamp}
+    
+spring:
+    h2:
+        console:
+            enabled: true
+            settings:
+                web-allow-others: true

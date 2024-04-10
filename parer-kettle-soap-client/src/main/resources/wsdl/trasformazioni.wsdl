@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://trasformazioni.parer.eng.it" name="TrasformazioniSoapService" targetNamespace="http://trasformazioni.parer.eng.it">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://trasformazioni.parer.eng.it" elementFormDefault="unqualified" targetNamespace="http://trasformazioni.parer.eng.it" version="1.0">
+
+  <xs:element name="eseguiTrasformazione" type="tns:eseguiTrasformazione"/>
+
+  <xs:element name="eseguiTrasformazioneResponse" type="tns:eseguiTrasformazioneResponse"/>
+
+  <xs:element name="esito" type="tns:esito"/>
+
+  <xs:element name="parametro" type="tns:parametro"/>
+
+  <xs:complexType name="eseguiTrasformazione">
+    <xs:sequence>
+      <xs:element name="idOggetto" type="xs:long"/>
+      <xs:element name="nomeTrasformazione" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" name="parametro" type="tns:parametro"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="parametro">
+    <xs:sequence>
+      <xs:element name="nome" type="xs:string"/>
+      <xs:element minOccurs="0" name="valore" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="eseguiTrasformazioneResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Esito" type="tns:esito"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="esito">
+    <xs:sequence>
+      <xs:element name="nomeTrasformazione" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="dettagli" nillable="true" type="xs:string"/>
+      <xs:element name="esitoSintetico" type="tns:esitoSINTETICO"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="esitoSINTETICO">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OK"/>
+      <xs:enumeration value="KO"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="eseguiTrasformazione">
+    <wsdl:part element="ns1:eseguiTrasformazione" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="eseguiTrasformazioneResponse">
+    <wsdl:part element="ns1:eseguiTrasformazioneResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TrasformazioniSoapService">
+    <wsdl:operation name="eseguiTrasformazione">
+      <wsdl:input message="ns1:eseguiTrasformazione" name="eseguiTrasformazione">
+    </wsdl:input>
+      <wsdl:output message="ns1:eseguiTrasformazioneResponse" name="eseguiTrasformazioneResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

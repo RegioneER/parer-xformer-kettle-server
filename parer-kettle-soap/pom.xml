@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>it.eng.parer</groupId>
+        <artifactId>parer-kettle</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>parer-kettle-soap</artifactId>
+    <name>Parer Kettle SOAP Service</name>
+    <description>Implementazione dei servizi SOAP esposti dal server implementato nel progetto Parer Kettle.</description>
+    <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>it.eng.parer</groupId>
+            <artifactId>parer-kettle-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>it.eng.parer</groupId>
+            <artifactId>parer-kettle-soap-client</artifactId>
+        </dependency> 
+        <dependency>
+            <groupId>it.eng.parer</groupId>
+            <artifactId>parer-kettle-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
+</project>
