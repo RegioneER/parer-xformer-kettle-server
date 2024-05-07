@@ -4,7 +4,7 @@
     <parent>
         <groupId>it.eng.parer</groupId>
         <artifactId>parer-kettle</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>parer-kettle-jpa</artifactId>
     <name>Parer Kettle Persistence</name>
