@@ -33,6 +33,7 @@
 
     <name>Parer Kettle</name>
     <description>Progetto che si occupa di implementare un'ambiente tomcat in cui effettuare le trasformazioni kettle.</description>
+    <url>https://nexus.ente.regione.emr.it/repository/parer-site/parer-kettle/${project.version}/</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -116,8 +117,8 @@
             <!-- Altro -->
             <dependency>
                 <groupId>com.oracle</groupId>
-                <artifactId>ojdbc16</artifactId>
-                <version>11.2.0.3.0</version>
+                <artifactId>ojdbc8</artifactId>
+                <version>18.3.0</version>
             </dependency>
             <dependency>
                 <groupId>javax.ws.rs</groupId>
@@ -244,7 +245,7 @@
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>xformer-transformations-utils-lib</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>0.0.8</version>
             </dependency>
             <dependency>
                 <groupId>commons-pool</groupId>

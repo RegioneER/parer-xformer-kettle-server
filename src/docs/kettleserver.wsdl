@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://soap.kettle.parer.eng.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://trasformazioni.parer.eng.it" name="TrasformazioniSoapServiceImplService" targetNamespace="http://soap.kettle.parer.eng.it/">
+  <wsdl:import location="http://parer-vtc-b03.ente.regione.emr.it:8080/kettle-server/services/soap/trasformazioni?wsdl=TrasformazioniSoapService.wsdl" namespace="http://trasformazioni.parer.eng.it">
+    </wsdl:import>
+  <wsdl:binding name="TrasformazioniSoapServiceImplServiceSoapBinding" type="ns1:TrasformazioniSoapService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="esistenzaCartella">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="esistenzaCartella">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="esistenzaCartellaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inserisciTransformation">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="inserisciTransformation">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="inserisciTransformationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="statusCodaTrasformazione">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="statusCodaTrasformazione">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="statusCodaTrasformazioneResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inserisciJob">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="inserisciJob">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="inserisciJobResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eseguiTrasformazione">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="eseguiTrasformazione">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="eseguiTrasformazioneResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="inserisciCartella">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="inserisciCartella">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="inserisciCartellaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ottieniParametri">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="ottieniParametri">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ottieniParametriResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminaCartella">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="eliminaCartella">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="eliminaCartellaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TrasformazioniSoapServiceImplService">
+    <wsdl:port binding="tns:TrasformazioniSoapServiceImplServiceSoapBinding" name="TrasformazioniSoapServiceImplPort">
+      <soap:address location="http://parer-vtc-b03.ente.regione.emr.it:8080/kettle-server/services/soap/trasformazioni"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
