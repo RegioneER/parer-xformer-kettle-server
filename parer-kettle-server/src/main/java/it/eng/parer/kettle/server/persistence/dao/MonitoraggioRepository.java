@@ -64,7 +64,8 @@ public interface MonitoraggioRepository extends JpaRepository<MonExecTrasf, Long
     public long countByNmKsInstanceAndTiStatoTrasfIn(String nmKsInstance,
             MonExecTrasf.STATO_TRASFORMAZIONE... tiStatoTrasf);
 
-    public Slice<MonExecTrasf> findByNmKsInstanceAndDtInizioTrasfBetweenAndTiStatoTrasfIn(Pageable pageable,
-            String nmKsInstance, Date startDate, Date endDate, MonExecTrasf.STATO_TRASFORMAZIONE... tiStatoTrasf);
+    public Slice<MonExecTrasf> findByNmKsInstanceAndDtInizioTrasfBetweenAndTiStatoTrasfInOrderByDtInizioTrasfDesc(
+            Pageable pageable, String nmKsInstance, Date startDate, Date endDate,
+            MonExecTrasf.STATO_TRASFORMAZIONE... tiStatoTrasf);
 
 }

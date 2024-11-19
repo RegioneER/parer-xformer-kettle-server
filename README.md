@@ -31,13 +31,13 @@ I servizi REST esposti sono i seguenti:
 
 I servizi SOAP esposti sono i seguenti:
 
-- **esistenzaCartella** : controlla l'esistenza di una determninata cartella nel repository di kettle.
+- **esistenzaCartella** : controlla l'esistenza di una determinata cartella nel repository di kettle.
 - **inserisciTransformation** : aggiunge una nuova trasformazione nel repository kettle.
 - **statusCodaTrasformazione** : resituisce un immagine delle trasformazione in corso, in coda o eseguite.
-- **inserisciJob** : aggiungi un nuovo job nel repository kettle.
+- **inserisciJob** : aggiunge un nuovo job nel repository kettle.
 - **eseguiTrasformazione** : esegue una trasformazione presente nel repository.
 - **inserisciCartella** : crea una nuova cartella nel repository di kettle.
-- **ottieniParametri** : ottiene una lista dei parametri di una determninata trasformazione.
+- **ottieniParametri** : ottiene una lista dei parametri di una determinata trasformazione.
 - **eliminaCartella** : elimina una cartella nel repository di kettle.
 
 [Qui](src/docs/kettleserver.wsdl) il wsdl dell'endpoint SOAP.

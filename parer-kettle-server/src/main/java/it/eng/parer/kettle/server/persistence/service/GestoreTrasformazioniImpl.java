@@ -17,7 +17,6 @@
 
 package it.eng.parer.kettle.server.persistence.service;
 
-import com.amazonaws.services.s3.model.S3Object;
 import it.eng.parer.kettle.model.KettleCrudException;
 import it.eng.parer.kettle.model.KettleJob;
 import it.eng.parer.kettle.model.KettleTransformation;
@@ -34,8 +33,8 @@ import it.eng.xformer.ws.NotificaOggettoTrasformatoRisposta;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -63,6 +62,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 /**
  *
@@ -481,7 +482,6 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
                     + trasformazione.getIdOggettoPing());
         }
 
-        S3Object s3Object = s3Client.getObject(oSBucket, oSKey);
         File targetFileDirectory = new File(targetFileDestDirectory + File.separator + "INPUT_FILE",
                 FilenameUtils.getBaseName(targetFileDest));
         File targetFile = new File(targetFileDirectory, FilenameUtils.getName(targetFileDest));
@@ -490,11 +490,12 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
             targetFileDirectory.mkdirs();
         }
 
-        try (InputStream in = s3Object.getObjectContent(); OutputStream os = new FileOutputStream(targetFile)) {
-
-            IOUtils.copyLarge(in, os);
+        try (OutputStream os = new FileOutputStream(targetFile)) {
+            ResponseInputStream<GetObjectResponse> s3Object = s3Client.getObject(oSBucket, oSKey);
+            IOUtils.copyLarge(s3Object, os);
 
         } catch (Exception ex) {
+            LOGGER.error("Errore nel recupero del file da object storage per " + trasformazione.getIdOggettoPing(), ex);
             throw new KettleException(
                     "Errore nel recupero del file da object storage per " + trasformazione.getIdOggettoPing());
         }

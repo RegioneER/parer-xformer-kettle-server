@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.eng.parer</groupId>
     <artifactId>parer-kettle</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <parent>
         <groupId>it.eng.parer</groupId>
@@ -11,7 +11,12 @@
         <version>4.2.0</version>
     </parent>
 
-    <distributionManagement>
+   <scm>
+        <developerConnection>scm:git:https://github.com/RegioneER/parer-xformer-kettle-server.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    
+     <distributionManagement>
         <repository>
           <id>github</id>
           <url>https://maven.pkg.github.com/RegioneER/parer-xformer-kettle-server</url>
@@ -25,12 +30,6 @@
         </repository>
      </repositories>
 
-    <scm>
-        <developerConnection>scm:git:https://github.com/RegioneER/parer-xformer-kettle-server.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-
-
     <name>Parer Kettle</name>
     <description>Progetto che si occupa di implementare un'ambiente tomcat in cui effettuare le trasformazioni kettle.</description>
 
@@ -41,6 +40,7 @@
         <sonar.projectVersion>${project.version}</sonar.projectVersion>
         <springboot.version>2.1.6.RELEASE</springboot.version>
         <maven.javadoc.skip>true</maven.javadoc.skip>
+        <software.amazon.awssdk.version>2.26.3</software.amazon.awssdk.version>
     </properties>
     
     <dependencyManagement>
@@ -49,37 +49,37 @@
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-model</artifactId>
-                <version>2.0.1-SNAPSHOT</version>
+                <version>2.1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-jpa</artifactId>
-                <version>2.0.1-SNAPSHOT</version>
+                <version>2.1.1-SNAPSHOT</version>
             </dependency>  
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-service</artifactId>
-                <version>2.0.1-SNAPSHOT</version>
+                <version>2.1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-soap</artifactId>
-                <version>2.0.1-SNAPSHOT</version>
+                <version>2.1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-soap-client</artifactId>
-                <version>2.0.1-SNAPSHOT</version>
+                <version>2.1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-rest</artifactId>
-                <version>2.0.1-SNAPSHOT</version>
+                <version>2.1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-rest-client</artifactId>
-                <version>2.0.1-SNAPSHOT</version>
+                <version>2.1.1-SNAPSHOT</version>
             </dependency>
             <!-- Logging -->
             <dependency>
@@ -166,23 +166,30 @@
             </dependency>
             
             <!-- Amazon S3 -->
-            <dependency>
+<!--            <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk-s3</artifactId>
                 <version>1.11.372</version>
+            </dependency>-->
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${software.amazon.awssdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>2.10.8</version>
             </dependency>
-            <dependency>
+<!--            <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk-bom</artifactId>
                 <version>1.11.372</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
+            </dependency>-->
         
             <!--dipendenze per gli step delle trasformazioni -->
             <!-- e per i plugin di pentaho -->
