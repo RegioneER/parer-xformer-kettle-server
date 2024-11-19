@@ -27,6 +27,7 @@ import it.eng.parer.kettle.server.persistence.dao.MonitoraggioRepository;
 import it.eng.parer.kettle.server.persistence.lite.dao.ReportRepository;
 import it.eng.parer.kettle.service.DataService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -60,6 +61,9 @@ public class DataServiceImpl implements DataService {
 
     @Autowired
     private ReportRepository reportRepository;
+
+    // MEV34451 TODO, leggere da file.
+    private final String[] blackListedParams = { "XF_KETTLE_DB_PASSWORD" };
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -140,6 +144,12 @@ public class DataServiceImpl implements DataService {
 
         StringBuilder parameters = new StringBuilder();
         for (Parametro parametro : trasformazione.getParametri()) {
+
+            if (Arrays.stream(blackListedParams).anyMatch(parametro.getNomeParametro()::equals)) {
+                // MEV34451 salta i parametri blacklistati.
+                continue;
+            }
+
             parameters = parameters.length() > 0
                     ? parameters.append(" | ").append(parametro.getNomeParametro()).append(" : ")
                             .append(parametro.getValoreParametro())
@@ -396,9 +406,9 @@ public class DataServiceImpl implements DataService {
         List<StatoTrasformazione> storicoTrasformazioni = new ArrayList<>();
 
         List<MonExecTrasf> monitoraggi = monitoraggioRepository
-                .findByNmKsInstanceAndDtInizioTrasfBetweenAndTiStatoTrasfIn(PageRequest.of(0, numResults),
-                        ottieniParametroConfigurazione("config.instance_name"), startDate, endDate,
-                        MonExecTrasf.STATO_TRASFORMAZIONE.ERRORE_TRASFORMAZIONE,
+                .findByNmKsInstanceAndDtInizioTrasfBetweenAndTiStatoTrasfInOrderByDtInizioTrasfDesc(
+                        PageRequest.of(0, numResults), ottieniParametroConfigurazione("config.instance_name"),
+                        startDate, endDate, MonExecTrasf.STATO_TRASFORMAZIONE.ERRORE_TRASFORMAZIONE,
                         MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_TERMINATA)
                 .getContent();
 

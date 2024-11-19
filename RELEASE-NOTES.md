@@ -1,9 +1,11 @@
-## 2.0.0 (24-04-2024)
+## 2.1.0 (11-11-2024)
 
-### Bugfix: 1
-- [#27975](https://parermine.regione.emilia-romagna.it/issues/27975) Correzione della gestione dell'avvio di kettle senza la presenza di object storage
+### Bugfix: 2
+- [#34198](https://parermine.regione.emilia-romagna.it/issues/34198) Lista di risultati troncati dalla chiamata allo storico delle trasformazioni
+- [#34064](https://parermine.regione.emilia-romagna.it/issues/34064) Gestione del carattere + nel nome dell'oggetto
 
-### Novità: 3
-- [#30870](https://parermine.regione.emilia-romagna.it/issues/30870) Migrazione plugin Kettle alla versione 9.4
-- [#29136](https://parermine.regione.emilia-romagna.it/issues/29136) Migrazione Kettle alla versione 9.4
-- [#25567](https://parermine.regione.emilia-romagna.it/issues/25567) Gestione esterna al pacchetto di deploy per le configurazioni di Kettle
+### Novità: 1
+- [#34451](https://parermine.regione.emilia-romagna.it/issues/34451) Rimuovere il parametro XF_KETTLE_DB_PASSWORD dal report di trasformazione
+
+### SUE: 1
+- [#34063](https://parermine.regione.emilia-romagna.it/issues/34063) Modifica all'url di AWS nella configurazione di kettle server (tutti gli ambienti)

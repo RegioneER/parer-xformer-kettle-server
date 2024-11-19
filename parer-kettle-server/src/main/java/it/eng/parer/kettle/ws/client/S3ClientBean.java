@@ -17,27 +17,32 @@
 
 package it.eng.parer.kettle.ws.client;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CompleteMultipartUploadRequest;
-import com.amazonaws.services.s3.model.CompleteMultipartUploadResult;
-import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
-import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.UploadPartRequest;
-import com.amazonaws.services.s3.model.UploadPartResult;
 import it.eng.parer.kettle.service.DataService;
 import java.io.File;
+import java.net.URI;
+import java.time.Duration;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.core.exception.SdkClientException;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.http.apache.ApacheHttpClient;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 /**
  *
@@ -51,7 +56,7 @@ public class S3ClientBean {
     @Autowired
     private DataService dataService;
 
-    private AmazonS3 awsClient;
+    private S3Client awsClient;
 
     private boolean isActiveFlag = false;
 
@@ -72,12 +77,16 @@ public class S3ClientBean {
 
             // Istanzio il client http (possiede le chiamate al protocollo Amazon S3)
             LOGGER.info("Sto per effettuare il collegamento all'endpoint S3 [ " + storageAddress + "]");
-            BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKeyId, secretKey);
-            awsClient = AmazonS3Client.builder()
-                    .withEndpointConfiguration(
-                            new AwsClientBuilder.EndpointConfiguration(storageAddress, Regions.US_EAST_1.name()))
-                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-                    .withPathStyleAccessEnabled(Boolean.TRUE).build();
+
+            final AwsCredentialsProvider credProvider = StaticCredentialsProvider
+                    .create(AwsBasicCredentials.create(accessKeyId, secretKey));
+
+            awsClient = S3Client.builder().endpointOverride(URI.create(storageAddress)).region(Region.US_EAST_1)
+                    .credentialsProvider(credProvider).forcePathStyle(true)
+                    .httpClientBuilder(ApacheHttpClient.builder().maxConnections(100)
+                            .connectionTimeout(Duration.ofMinutes(1L)).socketTimeout(Duration.ofMinutes(10L)))
+                    .build();
+
             LOGGER.info("##########             CLIENT S3 INIZIALIZZATO              ###################");
         } else {
             LOGGER.info("##########             CLIENT S3 DISATTIVO              ###################");
@@ -91,42 +100,46 @@ public class S3ClientBean {
     private void destroy() {
         LOGGER.info("Shutdown endpoint S3...");
         if (awsClient != null) {
-            awsClient.shutdown();
+            awsClient.close();
         }
     }
 
     public void deleteObject(String bucketName, String key) {
-        awsClient.deleteObject(bucketName, key);
+        DeleteObjectRequest delOb = DeleteObjectRequest.builder().bucket(bucketName).key(key).build();
+        awsClient.deleteObject(delOb);
     }
 
-    public S3Object getObject(String bucketName, String key) {
-        return awsClient.getObject(bucketName, key);
+    public ResponseInputStream<GetObjectResponse> getObject(String bucketName, String key) throws Exception {
+        try {
+            GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(key).build();
+            return awsClient.getObject(getObjectRequest);
+
+        } catch (AwsServiceException | SdkClientException e) {
+            LOGGER.error("impossibile ottenere dal bucket " + bucketName + " oggetto con chiave " + key, e);
+            throw new Exception("impossibile ottenere dal bucket " + bucketName + " oggetto con chiave " + key, e);
+        }
     }
 
     public boolean doesObjectExist(String bucketName, String key) {
-        return awsClient.doesObjectExist(bucketName, key);
+        HeadObjectRequest objectRequest = HeadObjectRequest.builder().key(key).bucket(bucketName).build();
+
+        try {
+            awsClient.headObject(objectRequest);
+            return true;
+
+        } catch (S3Exception e) {
+            return false;
+        }
     }
 
     public void putObject(String bucketName, String nomeFilePacchetto, File file) {
-        awsClient.putObject(bucketName, nomeFilePacchetto, file);
+        PutObjectRequest putOb = PutObjectRequest.builder().bucket(bucketName).key(nomeFilePacchetto).build();
+        awsClient.putObject(putOb, RequestBody.fromFile(file));
     }
 
     public void putObject(String bucketName, String nomeFilePacchetto, String content) {
-        awsClient.putObject(bucketName, nomeFilePacchetto, content);
-    }
-
-    public InitiateMultipartUploadResult initiateMultipartUpload(
-            InitiateMultipartUploadRequest initiateMultipartUploadRequest) {
-        return awsClient.initiateMultipartUpload(initiateMultipartUploadRequest);
-    }
-
-    public CompleteMultipartUploadResult completeMultipartUpload(
-            CompleteMultipartUploadRequest completeMultipartUploadRequest) {
-        return awsClient.completeMultipartUpload(completeMultipartUploadRequest);
-    }
-
-    public UploadPartResult uploadPart(UploadPartRequest uploadPartRequest) {
-        return awsClient.uploadPart(uploadPartRequest);
+        PutObjectRequest putOb = PutObjectRequest.builder().bucket(bucketName).key(nomeFilePacchetto).build();
+        awsClient.putObject(putOb, RequestBody.fromString(content));
     }
 
     public boolean isActive() {
