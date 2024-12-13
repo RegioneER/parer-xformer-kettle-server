@@ -49,23 +49,15 @@ public class LitePersistanceConfig {
     @Autowired
     private Environment env;
 
-    // @Bean
-    // public DataSourceInitializer liteDatasourceInitializer(@Qualifier("liteDatasource") DataSource datasource) {
-    // ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-    // resourceDatabasePopulator.addScript(new ClassPathResource("schema-monlog.sql"));
-    //
-    // DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
-    // dataSourceInitializer.setDataSource(datasource);
-    // dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
-    // return dataSourceInitializer;
-    // }
-
     @Bean
     public DataSource liteDatasource() throws NamingException {
         String repoJNDI = env.getProperty("jndi.kettle_lite_ds");
-        DataSource dataSource = (DataSource) new JndiTemplate().lookup(repoJNDI);
 
-        return dataSource;
+        if (repoJNDI != null) {
+            return (DataSource) new JndiTemplate().lookup(repoJNDI);
+        } else {
+            throw new NamingException("jndi.kettle_lite_ds not found.");
+        }
     }
 
     // Bean per @EnableJpaRepositories
@@ -74,7 +66,7 @@ public class LitePersistanceConfig {
 
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(liteDatasource());
-        em.setPackagesToScan(new String[] { "it.eng.parer.kettle.lite.jpa" });
+        em.setPackagesToScan("it.eng.parer.kettle.lite.jpa");
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaProperties(additionalProperties());
 

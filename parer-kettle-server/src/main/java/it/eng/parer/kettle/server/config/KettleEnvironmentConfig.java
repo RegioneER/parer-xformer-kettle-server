@@ -105,7 +105,7 @@ public class KettleEnvironmentConfig {
                 sb.append("\n\n");
             }
         }
-        LOGGER.info(sb.toString());
+        LOGGER.info("{}", sb);
     }
 
     @PreDestroy

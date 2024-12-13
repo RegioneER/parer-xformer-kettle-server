@@ -75,7 +75,7 @@ public class TrasformazioniSoapServiceImpl implements TrasformazioniSoapService 
         esito.setNomeTrasformazione(nomeTrasformazione);
         try {
             if (gestoreTrasformazioni.possoEseguireTrasformazione(trasformazione)) {
-                LOG.info("Trasformazione accodata per l'id oggetto " + idOggetto);
+                LOG.info("Trasformazione accodata per l'id oggetto {}", idOggetto);
 
                 gestoreTrasformazioni.eseguiTrasformazione(trasformazione);
 

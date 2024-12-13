@@ -41,7 +41,7 @@ public class KettleJob implements Serializable {
     private String versione;
 
     public KettleJob() {
-
+        // per usi futuri
     }
 
     public DataHandler getJobDescriptor() {

@@ -38,10 +38,10 @@ public abstract class AbstractEsito implements Serializable {
      */
     public enum ESITO_SINTETICO {
         OK, KO, CODA_PIENA
-    };
+    }
 
     protected String dettagli;
-    protected Esito.ESITO_SINTETICO esitoSintetico;
+    protected ESITO_SINTETICO esitoSintetico;
 
     public String getDettaglio() {
         return dettagli;
@@ -52,11 +52,11 @@ public abstract class AbstractEsito implements Serializable {
     }
 
     @XmlElement(nillable = false, required = true)
-    public Esito.ESITO_SINTETICO getEsitoSintetico() {
+    public ESITO_SINTETICO getEsitoSintetico() {
         return esitoSintetico;
     }
 
-    public void setEsitoSintetico(Esito.ESITO_SINTETICO esitoSintetico) {
+    public void setEsitoSintetico(ESITO_SINTETICO esitoSintetico) {
         this.esitoSintetico = esitoSintetico;
     }
 }

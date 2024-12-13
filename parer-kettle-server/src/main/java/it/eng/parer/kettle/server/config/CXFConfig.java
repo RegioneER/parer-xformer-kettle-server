@@ -54,11 +54,9 @@ public class CXFConfig {
     public static final String SOAP_TRASFORMAZIONI = "/soap/trasformazioni";
     public static final String REST_TRASFORMAZIONI_V1 = "/rest/v1";
 
-    @Value("true")
-    private boolean cxfDebug;
+    private final boolean cxfDebug = true;
 
-    @Value("true")
-    private boolean mtomEnabled;
+    private final boolean mtomEnabled = true;
 
     @Value("${build.version}")
     private String versioneSoftware;
@@ -87,7 +85,7 @@ public class CXFConfig {
 
     // --------------- SOAP
     @Bean
-    public TrasformazioniSoapService soapTrasformazioniService() {
+    public TrasformazioniSoapService soapTrasformazioniService(GestoreTrasformazioni gestoreTrasformazioni) {
         TrasformazioniSoapServiceImpl service = new TrasformazioniSoapServiceImpl();
         service.setGestoreTrasformazioni(gestoreTrasformazioni);
         service.setDataService(dataService);
@@ -101,7 +99,7 @@ public class CXFConfig {
 
     @Bean
     public Endpoint createSoapTrasformazioniEndpoint() {
-        EndpointImpl endpoint = new EndpointImpl(bus, soapTrasformazioniService());
+        EndpointImpl endpoint = new EndpointImpl(bus, soapTrasformazioniService(gestoreTrasformazioni));
         endpoint.publish(SOAP_TRASFORMAZIONI);
         enableMTOM(endpoint);
         return endpoint;
@@ -111,7 +109,6 @@ public class CXFConfig {
     @Bean
     public TrasformazioniService restTrasformazioniService() {
         TrasformazioniServiceImpl service = new TrasformazioniServiceImpl();
-        service.setGestoreTrasformazioni(gestoreTrasformazioni);
         service.setVersioneSoftware(versioneSoftware);
         return service;
     }

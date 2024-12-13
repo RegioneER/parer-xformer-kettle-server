@@ -22,8 +22,12 @@ package it.eng.parer.kettle.server;
  * @author Cappelli_F
  */
 public class Constants {
-    public final static String XF_OBJECT_STORAGE_KEY = "XF_OBJECT_STORAGE_KEY";
-    public final static String XF_OBJECT_STORAGE_BUCKET = "XF_OBJECT_STORAGE_BUCKET";
-    public final static String XF_INPUT_FILE_NAME = "XF_INPUT_FILE_NAME";
-    public final static String XF_TMP_DIR = "XF_TMP_DIR";
+    private Constants() {
+        // solo per non far lamentare sonarqube
+    }
+
+    public static final String XF_OBJECT_STORAGE_KEY = "XF_OBJECT_STORAGE_KEY";
+    public static final String XF_OBJECT_STORAGE_BUCKET = "XF_OBJECT_STORAGE_BUCKET";
+    public static final String XF_INPUT_FILE_NAME = "XF_INPUT_FILE_NAME";
+    public static final String XF_TMP_DIR = "XF_TMP_DIR";
 }

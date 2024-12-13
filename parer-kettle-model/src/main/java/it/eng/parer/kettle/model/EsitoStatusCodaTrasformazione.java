@@ -24,9 +24,9 @@ import java.util.List;
  * @author Cappelli_F
  */
 public class EsitoStatusCodaTrasformazione extends AbstractEsito {
-    List<StatoTrasformazione> trasformazioniInCorso;
-    List<StatoTrasformazione> trasformazioniInCoda;
-    List<StatoTrasformazione> storicoTrasformazioni;
+    private List<StatoTrasformazione> trasformazioniInCorso;
+    private List<StatoTrasformazione> trasformazioniInCoda;
+    private List<StatoTrasformazione> storicoTrasformazioni;
 
     public List<StatoTrasformazione> getTrasformazioniInCorso() {
         return trasformazioniInCorso;

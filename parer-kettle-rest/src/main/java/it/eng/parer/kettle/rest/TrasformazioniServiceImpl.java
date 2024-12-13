@@ -20,7 +20,6 @@ package it.eng.parer.kettle.rest;
 import it.eng.parer.kettle.model.StatoTrasformazione;
 import it.eng.parer.kettle.rest.client.TrasformazioniService;
 import it.eng.parer.kettle.service.DataService;
-import it.eng.parer.kettle.service.GestoreTrasformazioni;
 import java.util.List;
 
 /**
@@ -50,13 +49,8 @@ import java.util.List;
  */
 public class TrasformazioniServiceImpl implements TrasformazioniService {
 
-    private GestoreTrasformazioni gestoreTrasformazioni;
     private String versioneSoftware;
     private DataService dataService;
-
-    public void setGestoreTrasformazioni(GestoreTrasformazioni gestoreTrasformazioni) {
-        this.gestoreTrasformazioni = gestoreTrasformazioni;
-    }
 
     public void setDataService(DataService dataService) {
         this.dataService = dataService;
@@ -68,12 +62,7 @@ public class TrasformazioniServiceImpl implements TrasformazioniService {
 
     @Override
     public List<StatoTrasformazione> getTrasformazioni(String status) {
-        if (status != null) {
-
-        }
-
-        List<StatoTrasformazione> ottieniStatoTrasformazioniAttive = dataService.ottieniTrasformazioniAttive();
-        return ottieniStatoTrasformazioniAttive;
+        return dataService.ottieniTrasformazioniAttive();
     }
 
     @Override

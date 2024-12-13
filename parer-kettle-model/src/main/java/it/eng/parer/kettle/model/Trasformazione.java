@@ -29,12 +29,12 @@ public class Trasformazione implements Serializable {
 
     private static final long serialVersionUID = -2359465051207551433L;
     private String nomeTrasformazione;
-    private long IdOggettoPing;
+    private long idOggettoPing;
     private List<Parametro> parametri;
     private long idTrasfReport;
 
     public Trasformazione() {
-
+        // per usi futuri
     }
 
     public String getNomeTrasformazione() {
@@ -46,11 +46,11 @@ public class Trasformazione implements Serializable {
     }
 
     public long getIdOggettoPing() {
-        return IdOggettoPing;
+        return idOggettoPing;
     }
 
-    public void setIdOggettoPing(long IdOggettoPing) {
-        this.IdOggettoPing = IdOggettoPing;
+    public void setIdOggettoPing(long idOggettoPing) {
+        this.idOggettoPing = idOggettoPing;
     }
 
     public List<Parametro> getParametri() {
