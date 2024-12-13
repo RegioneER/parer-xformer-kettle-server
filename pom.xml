@@ -10,12 +10,8 @@
         <artifactId>parer-pom</artifactId> 
         <version>4.2.0</version>
     </parent>
-    <repositories>
-        <repository>
-            <id>pentaho</id>
-        </repository>
-    </repositories>
-<scm>
+
+   <scm>
         <developerConnection>scm:git:https://github.com/RegioneER/parer-xformer-kettle-server.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
@@ -27,7 +23,7 @@
         </repository>      
     </distributionManagement>
 
-<repositories>
+    <repositories>
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/RegioneER/parer-framework-parerpom</url>           
