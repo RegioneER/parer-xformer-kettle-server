@@ -44,7 +44,7 @@ public class MonExecTrasf implements Serializable {
 
     public enum STATO_TRASFORMAZIONE {
         IN_CODA_TRASFORMAZIONE, TRASFORMAZIONE_IN_CORSO, TRASFORMAZIONE_TERMINATA, ERRORE_TRASFORMAZIONE
-    };
+    }
 
     @Id
     @SequenceGenerator(name = "MON_EXEC_TRASF_IDEXECTRASF_GENERATOR", sequenceName = "SMON_EXEC_TRASF", allocationSize = 1)
@@ -87,7 +87,7 @@ public class MonExecTrasf implements Serializable {
     private String nmKsInstance;
 
     public MonExecTrasf() {
-
+        // per usi futuri.
     }
 
     public long getIdExecTrasf() {

@@ -29,18 +29,17 @@ import it.eng.parer.kettle.service.GestoreTrasformazioni;
 import it.eng.parer.kettle.ws.client.S3ClientBean;
 import it.eng.parer.kettle.ws.client.XformerWsClient;
 import it.eng.xformer.ws.NotificaOggettoTrasformato;
-import it.eng.xformer.ws.NotificaOggettoTrasformatoRisposta;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import javax.activation.DataHandler;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.pentaho.di.core.database.DatabaseMeta;
@@ -143,9 +142,7 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
             }
 
         } catch (IOException | KettleException ex) {
-            if (jobXmlFile != null && !jobXmlFile.delete()) {
-                LOGGER.warn("Attenzione, non è stato possibile eliminare il file temporaneo {}", jobXmlFile.getName());
-            }
+            FileUtils.deleteQuietly(jobXmlFile);
             LOGGER.error("Errore durante l'inserimento di un job nel repository: " + ex.getMessage(), ex);
             throw new KettleCrudException("Errore durante l'inserimento del job nel repository.");
         } finally {
@@ -173,10 +170,7 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
                 repository.save(transformationMeta, transformation.getVersione(), new GregorianCalendar(), null, true);
             }
         } catch (IOException | KettleException ex) {
-            if (transformationXmlFile != null && !transformationXmlFile.delete()) {
-                LOGGER.warn("Attenzione, non è stato possibile eliminare il file temporaneo {}",
-                        transformationXmlFile.getName());
-            }
+            FileUtils.deleteQuietly(transformationXmlFile);
             LOGGER.error("Errore durante l'inserimento della transformation kettle: " + ex.getMessage(), ex);
             throw new KettleCrudException(
                     "Errore durante l'inserimento della transformation kettle: " + ex.getMessage(), ex);
@@ -274,7 +268,7 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
 
             // MEV 22001 - controlliamo se tra i paramentri ci sono le informazioni per il recupero da Object Storage
             isObjectStorage = controllaSeTrasformazioneDaObjectStorage(parameters);
-            if (isObjectStorage == true) {
+            if (isObjectStorage) {
                 // MAC 27975
                 if (s3Client.isActive()) {
                     // MEV 22001 nel caso, mettiamo il file temporaneamente su disco, lo cancelleremo alla fine.
@@ -339,8 +333,7 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
                     serviceURL, soapTimeout);
             // Visto che notificaOggettoTrasformato è internamente un metodo asincrono che ritorna void la risposta sarà
             // sempre OK
-            NotificaOggettoTrasformatoRisposta risposta = client
-                    .notificaOggettoTrasformato(trasformazione.getIdOggettoPing(), errors, report);
+            client.notificaOggettoTrasformato(trasformazione.getIdOggettoPing(), errors, report);
 
         } catch (KettleException ex) {
             dataService.scartaTrasformazione(trasformazione, ex.getMessage());
@@ -369,8 +362,7 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
                 // se il file veniva da object storage ora bisogna rimuoverlo da disco
                 if (isObjectStorage && !objectStorageFilePath.isEmpty()) {
                     File objectStorageFile = new File(objectStorageFilePath);
-                    if (objectStorageFile.exists())
-                        objectStorageFile.delete();
+                    FileUtils.deleteQuietly(objectStorageFile);
                 }
 
                 dataService.pulisciReport(trasformazione);
@@ -422,7 +414,7 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
         return result;
     }
 
-    private boolean controllaSeTrasformazioneDaObjectStorage(List<Parametro> parameters) throws Exception {
+    private boolean controllaSeTrasformazioneDaObjectStorage(List<Parametro> parameters) throws KettleException {
         boolean POSKFound = false;
         boolean POSBFound = false;
 
@@ -440,7 +432,7 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
 
         // trovato solo uno dei due paramtri necessari, errore!
         if (POSKFound != POSBFound) {
-            throw new Exception(
+            throw new KettleException(
                     "Alcuni dei parametri necessari al recupero del pacchetto da Object Storage sono mancanti.");
         }
 

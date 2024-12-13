@@ -37,7 +37,7 @@ public class EsitoListaParametri extends AbstractEsito {
 
     public void addParameter(Parametro parameter) {
         if (this.parameters == null)
-            this.parameters = new ArrayList<Parametro>();
+            this.parameters = new ArrayList<>();
 
         this.parameters.add(parameter);
     }

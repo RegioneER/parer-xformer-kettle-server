@@ -49,7 +49,7 @@ public class SOAPClientLoginHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public boolean handleMessage(SOAPMessageContext msgCtx) {
-        Boolean outbound = (Boolean) msgCtx.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+        boolean outbound = (boolean) msgCtx.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
         if (outbound) {
             try {
@@ -100,11 +100,12 @@ public class SOAPClientLoginHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public void close(MessageContext context) {
+        // per usi futuri
     }
 
     @Override
     public Set<QName> getHeaders() {
-        HashSet<QName> headers = new HashSet<QName>();
+        HashSet<QName> headers = new HashSet<>();
         headers.add(QNAME_WSSE_HEADER);
         return headers;
     }

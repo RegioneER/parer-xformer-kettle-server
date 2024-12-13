@@ -68,6 +68,7 @@ public class MonLog implements Serializable {
     private String flEscapeXml;
 
     public MonLog() {
+        // per usi futuri
     }
 
     public long getIdMonLog() {

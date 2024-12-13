@@ -32,8 +32,10 @@ import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.pentaho.di.core.exception.KettleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataServiceImpl implements DataService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataServiceImpl.class);
+    private static final String INSTANCE_NAME_PARAMETER = "config.instance_name";
 
     @Autowired
     private Environment env;
@@ -72,7 +75,7 @@ public class DataServiceImpl implements DataService {
                 .parseInt(ottieniParametroConfigurazione("transformation.queue"));
 
         long lunghezzaCorrenteCodaDiTrasformazione = monitoraggioRepository.countByNmKsInstanceAndTiStatoTrasfIn(
-                ottieniParametroConfigurazione("config.instance_name"),
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER),
                 MonExecTrasf.STATO_TRASFORMAZIONE.IN_CODA_TRASFORMAZIONE,
                 MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_IN_CORSO);
 
@@ -82,7 +85,7 @@ public class DataServiceImpl implements DataService {
 
         long idPigObject = trasformazione.getIdOggettoPing();
         MonExecTrasf monitoraggio = monitoraggioRepository.findByIdPigObjectAndNmKsInstance(idPigObject,
-                ottieniParametroConfigurazione("config.instance_name"));
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER));
         if (monitoraggio != null) {
             // se è già in coda o in corso non accetare la trasformazione, ma potrebbe essere in stato di errore o già
             // trasformata
@@ -101,7 +104,7 @@ public class DataServiceImpl implements DataService {
             monitoraggio.setIdPigObject(idPigObject);
         }
 
-        monitoraggio.setNmKsInstance(ottieniParametroConfigurazione("config.instance_name"));
+        monitoraggio.setNmKsInstance(ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER));
         monitoraggio.setNmTrasf(trasformazione.getNomeTrasformazione());
         monitoraggio.setTiStatoTrasf(MonExecTrasf.STATO_TRASFORMAZIONE.IN_CODA_TRASFORMAZIONE);
         monitoraggio.setDtInvocazioneWs(new Date());
@@ -116,7 +119,7 @@ public class DataServiceImpl implements DataService {
     public void iniziaTrasformazione(Trasformazione trasformazione) {
         long idPigObject = trasformazione.getIdOggettoPing();
         MonExecTrasf monitoraggio = monitoraggioRepository.findByIdPigObjectAndNmKsInstance(idPigObject,
-                ottieniParametroConfigurazione("config.instance_name"));
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER));
         if (monitoraggio == null) {
             throw new TrasformazioneException("Impossibile trovare la trasformazione per l'id oggetto  " + idPigObject);
         }
@@ -185,7 +188,7 @@ public class DataServiceImpl implements DataService {
     public void terminaTrasformazione(Trasformazione trasformazione) {
         long idPigObject = trasformazione.getIdOggettoPing();
         MonExecTrasf monitoraggio = monitoraggioRepository.findByIdPigObjectAndNmKsInstance(idPigObject,
-                ottieniParametroConfigurazione("config.instance_name"));
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER));
         if (monitoraggio == null) {
             throw new TrasformazioneException("Impossibile trovare la trasformazione per l'id oggetto  " + idPigObject);
         }
@@ -213,7 +216,7 @@ public class DataServiceImpl implements DataService {
     public void scartaTrasformazione(Trasformazione trasformazione, String message) throws TrasformazioneException {
         long idPigObject = trasformazione.getIdOggettoPing();
         MonExecTrasf monitoraggio = monitoraggioRepository.findByIdPigObjectAndNmKsInstance(idPigObject,
-                ottieniParametroConfigurazione("config.instance_name"));
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER));
         if (monitoraggio == null) {
             throw new TrasformazioneException("Impossibile trovare la trasformazione per l'id oggetto  " + idPigObject);
         }
@@ -246,14 +249,14 @@ public class DataServiceImpl implements DataService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void eliminaTrasformazione(Trasformazione trasformazione) {
         monitoraggioRepository.pulisciTrasformazione(trasformazione.getIdOggettoPing(),
-                ottieniParametroConfigurazione("config.instance_name"));
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER));
     }
 
     @Override
     public List<StatoTrasformazione> ottieniTrasformazioniAttive() {
         List<StatoTrasformazione> trasformazioniAttive = new ArrayList<>();
         List<MonExecTrasf> monitoraggi = monitoraggioRepository.findByNmKsInstanceAndTiStatoTrasf(
-                ottieniParametroConfigurazione("config.instance_name"),
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER),
                 MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_IN_CORSO);
         for (MonExecTrasf monitoraggio : monitoraggi) {
             trasformazioniAttive.add(getStato(monitoraggio));
@@ -265,7 +268,7 @@ public class DataServiceImpl implements DataService {
     public List<StatoTrasformazione> ottieniTrasformazioniInCoda() {
         List<StatoTrasformazione> trasformazioniInCoda = new ArrayList<>();
         List<MonExecTrasf> monitoraggi = monitoraggioRepository.findByNmKsInstanceAndTiStatoTrasf(
-                ottieniParametroConfigurazione("config.instance_name"),
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER),
                 MonExecTrasf.STATO_TRASFORMAZIONE.IN_CODA_TRASFORMAZIONE);
         for (MonExecTrasf monitoraggio : monitoraggi) {
             trasformazioniInCoda.add(getStato(monitoraggio));
@@ -304,7 +307,7 @@ public class DataServiceImpl implements DataService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void reinizializzaEPulisci() {
         List<MonExecTrasf> trasformazioni = monitoraggioRepository.findByNmKsInstanceAndTiStatoTrasf(
-                ottieniParametroConfigurazione("config.instance_name"),
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER),
                 MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_IN_CORSO);
         for (MonExecTrasf trasformazione : trasformazioni) {
             trasformazione.setTiStatoTrasf(MonExecTrasf.STATO_TRASFORMAZIONE.ERRORE_TRASFORMAZIONE);
@@ -312,7 +315,7 @@ public class DataServiceImpl implements DataService {
         }
 
         trasformazioni = monitoraggioRepository.findByNmKsInstanceAndTiStatoTrasf(
-                ottieniParametroConfigurazione("config.instance_name"),
+                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER),
                 MonExecTrasf.STATO_TRASFORMAZIONE.IN_CODA_TRASFORMAZIONE);
         for (MonExecTrasf trasformazione : trasformazioni) {
             trasformazione.setTiStatoTrasf(MonExecTrasf.STATO_TRASFORMAZIONE.ERRORE_TRASFORMAZIONE);
@@ -343,7 +346,7 @@ public class DataServiceImpl implements DataService {
             default: {
                 try {
                     addReportEntry(report, log);
-                } catch (Exception ex) {
+                } catch (KettleException | DocumentException ex) {
                     LOGGER.warn(ex.getMessage());
                 }
             }
@@ -357,9 +360,8 @@ public class DataServiceImpl implements DataService {
         return report.asXML();
     }
 
-    private void addReportEntry(Document report, MonLog log) throws Exception {
+    private void addReportEntry(Document report, MonLog log) throws KettleException, DocumentException {
         String[] cdLogs = log.getCdLog().split("/");
-        String dsLog = log.getDsLog();
 
         Element currentElement = report.getRootElement();
         String xpath = "/Report";
@@ -373,25 +375,31 @@ public class DataServiceImpl implements DataService {
                     currentElement = nextElement;
                 }
             } else {
-                throw new Exception("REPORT: " + cdLogs[i] + " non è un elemeto XML valido.");
+                throw new KettleException("REPORT: " + cdLogs[i] + " non è un elemeto XML valido.");
             }
         }
 
         if (!cdLogs[cdLogs.length - 1].isEmpty() && isValidName(cdLogs[cdLogs.length - 1])) {
-            if (log.getFlEscapeXml() == null || log.getFlEscapeXml().equals("1")) {
-                currentElement = currentElement.addElement(cdLogs[cdLogs.length - 1]);
-                currentElement.addAttribute("time", log.getDtLog().toString());
-                currentElement.addText(dsLog);
-            } else {
-                StringBuilder unenscapedElement = new StringBuilder();
-                unenscapedElement.append("<").append(cdLogs[cdLogs.length - 1]).append(" time=\"")
-                        .append(log.getDtLog().toString()).append("\" >");
-                unenscapedElement.append(dsLog);
-                unenscapedElement.append("</").append(cdLogs[cdLogs.length - 1]).append(">");
-                currentElement.add(DocumentHelper.parseText(unenscapedElement.toString()).getRootElement());
-            }
+            addReportElement(log, currentElement, cdLogs[cdLogs.length - 1]);
         } else {
-            throw new Exception("REPORT: " + cdLogs[cdLogs.length - 1] + " non è un elemeto XML valido.");
+            throw new KettleException("REPORT: " + cdLogs[cdLogs.length - 1] + " non è un elemeto XML valido.");
+        }
+    }
+
+    private void addReportElement(MonLog log, Element currentElement, String content) throws DocumentException {
+        String dsLog = log.getDsLog();
+
+        if (log.getFlEscapeXml() == null || log.getFlEscapeXml().equals("1")) {
+            currentElement = currentElement.addElement(content);
+            currentElement.addAttribute("time", log.getDtLog().toString());
+            currentElement.addText(dsLog);
+        } else {
+            StringBuilder unenscapedElement = new StringBuilder();
+            unenscapedElement.append("<").append(content).append(" time=\"").append(log.getDtLog().toString())
+                    .append("\" >");
+            unenscapedElement.append(dsLog);
+            unenscapedElement.append("</").append(content).append(">");
+            currentElement.add(DocumentHelper.parseText(unenscapedElement.toString()).getRootElement());
         }
     }
 
@@ -407,8 +415,9 @@ public class DataServiceImpl implements DataService {
 
         List<MonExecTrasf> monitoraggi = monitoraggioRepository
                 .findByNmKsInstanceAndDtInizioTrasfBetweenAndTiStatoTrasfInOrderByDtInizioTrasfDesc(
-                        PageRequest.of(0, numResults), ottieniParametroConfigurazione("config.instance_name"),
+                        PageRequest.of(0, numResults), ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER),
                         startDate, endDate, MonExecTrasf.STATO_TRASFORMAZIONE.ERRORE_TRASFORMAZIONE,
+
                         MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_TERMINATA)
                 .getContent();
 
@@ -424,7 +433,7 @@ public class DataServiceImpl implements DataService {
      *
      * @param name
      *            string to check
-     * 
+     *
      * @return true if name is a valid Name
      */
     private boolean isValidName(String name) {
@@ -441,6 +450,7 @@ public class DataServiceImpl implements DataService {
         if (!isName(remainingChars)) {
             return false;
         }
+
         return true;
     }
 

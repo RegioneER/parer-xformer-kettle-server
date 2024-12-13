@@ -48,18 +48,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         "it.eng.parer.kettle.server.persistence.dao" }, entityManagerFactoryRef = "entityManagerFactory", transactionManagerRef = "transactionManager")
 public class PersistenceConfig {
 
-    // @Value("${datasource.username}")
-    // private String username;
-    //
-    // @Value("${datasource.password}")
-    // private String password;
-    //
-    // @Value("${datasource.url}")
-    // private String dataSourceUrl;
-    //
-    // @Value("${datasource.driver.class}")
-    // private String dataSourceDriverClassName;
-
     @Autowired
     private Environment env;
 
@@ -67,14 +55,11 @@ public class PersistenceConfig {
     @Primary
     public DataSource datasource() throws NamingException {
         String repoJNDI = env.getProperty("jndi.kettle_ds");
-        DataSource dataSource = (DataSource) new JndiTemplate().lookup(repoJNDI);
-        // DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        // dataSource.setDriverClassName(dataSourceDriverClassName);
-        // dataSource.setUrl(dataSourceUrl);
-        // dataSource.setUsername(username);
-        // dataSource.setPassword(password);
-
-        return dataSource;
+        if (repoJNDI != null) {
+            return (DataSource) new JndiTemplate().lookup(repoJNDI);
+        } else {
+            throw new NamingException("jndi.kettle_ds not found.");
+        }
     }
 
     // Bean per @EnableJpaRepositories
@@ -84,7 +69,7 @@ public class PersistenceConfig {
 
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(datasource());
-        em.setPackagesToScan(new String[] { "it.eng.parer.kettle.jpa" });
+        em.setPackagesToScan("it.eng.parer.kettle.jpa");
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaProperties(additionalProperties());
 
@@ -112,8 +97,8 @@ public class PersistenceConfig {
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("javax.persistence.logging.level", "DEBUG");
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-        // produce output non formattato su catalina.out
-        // hibernateProperties.setProperty("hibernate.show_sql", "true");
+        // produce output non formattato su catalina.out hiberna teProperties.setProp erty("hibernate.show_sql",
+        // "true");
         return hibernateProperties;
     }
 }

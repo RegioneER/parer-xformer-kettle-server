@@ -4,13 +4,13 @@
     <parent>
         <groupId>it.eng.parer</groupId>
         <artifactId>parer-kettle</artifactId> 
-        <version>2.1.1-SNAPSHOT</version>
+        <version>2.1.2-SNAPSHOT</version>
     </parent>
     <artifactId>parer-kettle-model</artifactId>
     <name>Parer Kettle Model</name>
     <description>Data Transfer Object utilizzati dal progetto Parer Kettle.</description>
     <packaging>jar</packaging>
-    
+
     <dependencies>
         <dependency>
             <groupId>javax.xml.bind</groupId>

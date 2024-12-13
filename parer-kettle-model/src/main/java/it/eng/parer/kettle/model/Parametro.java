@@ -70,8 +70,7 @@ public class Parametro implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        return hash;
+        return super.hashCode();
     }
 
     @Override
@@ -82,17 +81,15 @@ public class Parametro implements Serializable {
         if (obj == null) {
             return false;
         }
+
         if (getClass() != obj.getClass()) {
             return false;
         }
+
         final Parametro other = (Parametro) obj;
-        if (!Objects.equals(this.nomeParametro, other.nomeParametro)) {
-            return false;
-        }
-        if (!Objects.equals(this.valoreParametro, other.valoreParametro)) {
-            return false;
-        }
-        return true;
+
+        return Objects.equals(this.nomeParametro, other.nomeParametro)
+                && Objects.equals(this.valoreParametro, other.valoreParametro);
     }
 
 }

@@ -34,16 +34,19 @@ public class XformerWsClient {
 
     private static NotificaOggettoTrasformato_Service notificaOggettoTrasformatoService;
 
+    private XformerWsClient() {
+    }
+
     public static NotificaOggettoTrasformato getNotificaOggettoTrasformatoClient(String username, String password,
             String serviceURL, Integer timeout) {
         try {
-            LOGGER.info("Connessione al WS: " + serviceURL);
+            LOGGER.info("Connessione al WS: {}", serviceURL);
             synchronized (XformerWsClient.class) {
                 if (notificaOggettoTrasformatoService == null) {
                     URL wsdlURL = new URL(serviceURL + "?wsdl");
                     notificaOggettoTrasformatoService = new NotificaOggettoTrasformato_Service(wsdlURL);
                     notificaOggettoTrasformatoService.setHandlerResolver(new SOAPClientLoginHandlerResolver());
-                    LOGGER.debug("Creato il client service per il WS: " + serviceURL);
+                    LOGGER.debug("Creato il client service per il WS: {}", serviceURL);
                 }
             }
 

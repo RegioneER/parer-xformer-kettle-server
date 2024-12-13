@@ -41,7 +41,7 @@ public class KettleTransformation implements Serializable {
     private String versione;
 
     public KettleTransformation() {
-
+        // per usi futuri
     }
 
     public DataHandler getTransformationDescriptor() {
