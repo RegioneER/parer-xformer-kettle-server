@@ -30,10 +30,11 @@ config:
     
     # configurazione accesso al server Object Storage
     object_storage:
-        enabled: true
-        url: https://parersgs3.ente.regione.emr.it:8082
-        access_key: 3O9N4T5P8RR8CVRSF12J
-        secret: PkvfCX4pZ/sKjYeOYEbF5q7Sj18h7GYv1TdV6Bh2
+        max_connections: 100
+        # in minuti
+        connection_timeout: 1 
+        # in minuti
+        socket_timeout: 10
     
 # Concorrenza
 transformation:

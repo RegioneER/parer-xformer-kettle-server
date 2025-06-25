@@ -26,11 +26,6 @@ config:
     timeout_ws_notifica: 600000
     plugin_folder_path: /opt/pentaho/7.0.0.0-25/plugins/
     
-    object_storage:
-        url: https://parersgs3.ente.regione.emr.it:8082
-        access_key: xxxxxxxxxxxxxxxxx
-        secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    
 # Concorrenza
 transformation:
     concurrency: 3
