@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-
 package it.eng.parer.kettle.server.persistence.service;
 
 import it.eng.parer.kettle.model.KettleCrudException;
@@ -26,13 +25,15 @@ import it.eng.parer.kettle.server.Constants;
 import it.eng.parer.kettle.server.config.KettleCustomFileLoggingEventListener;
 import it.eng.parer.kettle.service.DataService;
 import it.eng.parer.kettle.service.GestoreTrasformazioni;
-import it.eng.parer.kettle.ws.client.S3ClientBean;
+import it.eng.parer.kettle.ws.client.AwsClient;
 import it.eng.parer.kettle.ws.client.XformerWsClient;
 import it.eng.xformer.ws.NotificaOggettoTrasformato;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -62,6 +63,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 /**
@@ -81,7 +84,7 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
     @Autowired
     private ApplicationContext appContext;
     @Autowired
-    private S3ClientBean s3Client;
+    private AwsClient s3Clients;
 
     public void setDataService(DataService dataService) {
         this.dataService = dataService;
@@ -269,21 +272,15 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
             // MEV 22001 - controlliamo se tra i paramentri ci sono le informazioni per il recupero da Object Storage
             isObjectStorage = controllaSeTrasformazioneDaObjectStorage(parameters);
             if (isObjectStorage) {
-                // MAC 27975
-                if (s3Client.isActive()) {
-                    // MEV 22001 nel caso, mettiamo il file temporaneamente su disco, lo cancelleremo alla fine.
-                    objectStorageFilePath = preparaTrasformazioneDaObjectStorage(trasformazione);
-                } else {
-                    throw new KettleException(
-                            "Richiesta trasformazione da object storage, ma l'object storage è disattivato da configurazione.");
-                }
+                // MEV 22001 nel caso, mettiamo il file temporaneamente su disco, lo cancelleremo alla fine.
+                objectStorageFilePath = preparaTrasformazioneDaObjectStorage(trasformazione);
             }
 
             String username = dataService.ottieniParametroConfigurazione("config.user_ws_notifica");
             String password = dataService.ottieniParametroConfigurazione("config.psw_ws_notifica");
             String serviceURL = dataService.ottieniParametroConfigurazione("config.url_ws_notifica");
             String soapTimeoutString = dataService.ottieniParametroConfigurazione("config.timeout_ws_notifica");
-            Integer soapTimeout = Integer.parseInt(soapTimeoutString);
+            Integer soapTimeout = Integer.valueOf(soapTimeoutString);
 
             repository = getRepository();
             RepositoryDirectoryInterface repositoryRoot = repository.loadRepositoryDirectoryTree();
@@ -417,6 +414,9 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
     private boolean controllaSeTrasformazioneDaObjectStorage(List<Parametro> parameters) throws KettleException {
         boolean POSKFound = false;
         boolean POSBFound = false;
+        boolean POSUFound = false;
+        boolean POSUSFound = false;
+        boolean POSPFound = false;
 
         for (Parametro parameter : parameters) {
             if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_KEY)
@@ -428,20 +428,33 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
                     && !parameter.getValoreParametro().trim().isEmpty()) {
                 POSBFound = true;
             }
+
+            if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_URL)
+                    && !parameter.getValoreParametro().trim().isEmpty()) {
+                POSUFound = true;
+            }
+
+            if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_USER)
+                    && !parameter.getValoreParametro().trim().isEmpty()) {
+                POSUSFound = true;
+            }
+
+            if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_PASSWORD)
+                    && !parameter.getValoreParametro().trim().isEmpty()) {
+                POSPFound = true;
+            }
         }
 
-        // trovato solo uno dei due paramtri necessari, errore!
-        if (POSKFound != POSBFound) {
-            throw new KettleException(
-                    "Alcuni dei parametri necessari al recupero del pacchetto da Object Storage sono mancanti.");
-        }
-
-        return POSKFound && POSBFound;
+        return POSKFound && POSBFound && POSUFound && POSUSFound && POSPFound;
     }
 
-    private String preparaTrasformazioneDaObjectStorage(Trasformazione trasformazione) throws KettleException {
+    private String preparaTrasformazioneDaObjectStorage(Trasformazione trasformazione)
+            throws KettleException, URISyntaxException {
         String oSBucket = "";
         String oSKey = "";
+        String oSUrl = "";
+        String oSAccessId = "";
+        String oSSecretKey = "";
         String targetFileDest = "";
         String targetFileDestDirectory = "";
 
@@ -454,11 +467,23 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
             if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_KEY)
                     && !parameter.getValoreParametro().trim().isEmpty()) {
                 oSKey = parameter.getValoreParametro().trim();
-                iter.remove();
+                iter.remove(); // non passarlo alla trasformazione
             } else if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_BUCKET)
                     && !parameter.getValoreParametro().trim().isEmpty()) {
                 oSBucket = parameter.getValoreParametro().trim();
-                iter.remove();
+                iter.remove(); // non passarlo alla trasformazione
+            } else if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_URL)
+                    && !parameter.getValoreParametro().trim().isEmpty()) {
+                oSUrl = parameter.getValoreParametro().trim();
+                iter.remove(); // non passarlo alla trasformazione
+            } else if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_USER)
+                    && !parameter.getValoreParametro().trim().isEmpty()) {
+                oSAccessId = parameter.getValoreParametro().trim();
+                iter.remove(); // non passarlo alla trasformazione
+            } else if (parameter.getNomeParametro().equals(Constants.XF_OBJECT_STORAGE_PASSWORD)
+                    && !parameter.getValoreParametro().trim().isEmpty()) {
+                oSSecretKey = parameter.getValoreParametro().trim();
+                iter.remove(); // non passarlo alla trasformazione
             } else if (parameter.getNomeParametro().equals(Constants.XF_INPUT_FILE_NAME)
                     && !parameter.getValoreParametro().trim().isEmpty()) {
                 targetFileDest = parameter.getValoreParametro().trim();
@@ -474,6 +499,8 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
                     + trasformazione.getIdOggettoPing());
         }
 
+        S3Client s3SourceClient = s3Clients.getClient(new URI(oSUrl), oSAccessId, oSSecretKey);
+
         File targetFileDirectory = new File(targetFileDestDirectory + File.separator + "INPUT_FILE",
                 FilenameUtils.getBaseName(targetFileDest));
         File targetFile = new File(targetFileDirectory, FilenameUtils.getName(targetFileDest));
@@ -483,7 +510,8 @@ public class GestoreTrasformazioniImpl implements GestoreTrasformazioni {
         }
 
         try (OutputStream os = new FileOutputStream(targetFile)) {
-            ResponseInputStream<GetObjectResponse> s3Object = s3Client.getObject(oSBucket, oSKey);
+            GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(oSBucket).key(oSKey).build();
+            ResponseInputStream<GetObjectResponse> s3Object = s3SourceClient.getObject(getObjectRequest);
             IOUtils.copyLarge(s3Object, os);
 
         } catch (Exception ex) {

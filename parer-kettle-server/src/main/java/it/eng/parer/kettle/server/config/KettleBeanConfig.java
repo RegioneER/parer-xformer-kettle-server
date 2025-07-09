@@ -20,7 +20,7 @@ package it.eng.parer.kettle.server.config;
 import it.eng.parer.kettle.server.persistence.service.GestoreTrasformazioniImpl;
 import it.eng.parer.kettle.service.DataService;
 import it.eng.parer.kettle.service.GestoreTrasformazioni;
-import it.eng.parer.kettle.ws.client.S3ClientBean;
+import it.eng.parer.kettle.ws.client.AwsClient;
 import java.util.concurrent.Executor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -53,8 +53,8 @@ public class KettleBeanConfig {
 
     @Bean
     @Scope("singleton")
-    public S3ClientBean s3ClientBean() {
-        return new S3ClientBean();
+    public AwsClient s3ClientBean() {
+        return new AwsClient();
     }
 
     /**

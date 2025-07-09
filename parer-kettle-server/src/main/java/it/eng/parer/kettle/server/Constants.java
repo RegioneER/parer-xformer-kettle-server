@@ -26,6 +26,9 @@ public class Constants {
         // solo per non far lamentare sonarqube
     }
 
+    public static final String XF_OBJECT_STORAGE_URL = "XF_OBJECT_STORAGE_URL";
+    public static final String XF_OBJECT_STORAGE_USER = "XF_OBJECT_STORAGE_USER";
+    public static final String XF_OBJECT_STORAGE_PASSWORD = "XF_OBJECT_STORAGE_PASSWORD";
     public static final String XF_OBJECT_STORAGE_KEY = "XF_OBJECT_STORAGE_KEY";
     public static final String XF_OBJECT_STORAGE_BUCKET = "XF_OBJECT_STORAGE_BUCKET";
     public static final String XF_INPUT_FILE_NAME = "XF_INPUT_FILE_NAME";
