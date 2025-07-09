@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.eng.parer</groupId>
     <artifactId>parer-kettle</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <parent>
         <groupId>it.eng.parer</groupId>
@@ -13,7 +13,7 @@
     
 <scm>
         <developerConnection>scm:git:https://github.com/RegioneER/parer-xformer-kettle-server.git</developerConnection>
-        <tag>parer-kettle-3.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
     
 <distributionManagement>
@@ -49,37 +49,37 @@
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-model</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-jpa</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1-SNAPSHOT</version>
             </dependency>  
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-service</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-soap</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-soap-client</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-rest</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-rest-client</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1-SNAPSHOT</version>
             </dependency>
             <!-- Logging -->
             <dependency>
