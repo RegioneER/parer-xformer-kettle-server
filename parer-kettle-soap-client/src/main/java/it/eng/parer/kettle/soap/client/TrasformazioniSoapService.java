@@ -17,16 +17,8 @@
 
 package it.eng.parer.kettle.soap.client;
 
-import it.eng.parer.kettle.model.Esito;
-import it.eng.parer.kettle.model.EsitoCartella;
-import it.eng.parer.kettle.model.EsitoEsitenzaCartella;
-import it.eng.parer.kettle.model.EsitoJob;
-import it.eng.parer.kettle.model.EsitoListaParametri;
-import it.eng.parer.kettle.model.EsitoStatusCodaTrasformazione;
-import it.eng.parer.kettle.model.EsitoTransformation;
-import it.eng.parer.kettle.model.KettleJob;
-import it.eng.parer.kettle.model.KettleTransformation;
-import it.eng.parer.kettle.model.Parametro;
+import it.eng.parer.kettle.model.*;
+
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebParam;
@@ -134,6 +126,8 @@ public interface TrasformazioniSoapService {
 
     /**
      * 
+     * @param idObject
+     * @param transformationName
      * @param startDate
      * @param endDate
      * @param numResults
@@ -141,6 +135,6 @@ public interface TrasformazioniSoapService {
      * @return
      */
     @WebResult(name = "EsitoStatusCodaTrasformazione")
-    EsitoStatusCodaTrasformazione statusCodaTrasformazione(Date startDate, Date endDate, int numResults);
-
+    EsitoStatusCodaTrasformazione statusCodaTrasformazione(Long idObject, String transformationName, Date startDate,
+            Date endDate, int numResults);
 }

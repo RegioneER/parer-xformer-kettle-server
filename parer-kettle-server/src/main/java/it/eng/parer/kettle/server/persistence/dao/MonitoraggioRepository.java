@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface MonitoraggioRepository extends JpaRepository<MonExecTrasf, Long> {
+public interface MonitoraggioRepository extends JpaRepository<MonExecTrasf, Long>, SearchMonitoraggioRepository {
 
     @Override
     List<MonExecTrasf> findAll();
@@ -64,6 +64,7 @@ public interface MonitoraggioRepository extends JpaRepository<MonExecTrasf, Long
     public long countByNmKsInstanceAndTiStatoTrasfIn(String nmKsInstance,
             MonExecTrasf.STATO_TRASFORMAZIONE... tiStatoTrasf);
 
+    @Deprecated
     public Slice<MonExecTrasf> findByNmKsInstanceAndDtInizioTrasfBetweenAndTiStatoTrasfInOrderByDtInizioTrasfDesc(
             Pageable pageable, String nmKsInstance, Date startDate, Date endDate,
             MonExecTrasf.STATO_TRASFORMAZIONE... tiStatoTrasf);

@@ -1,5 +1,4 @@
-## 3.0.0 (25-06-2025)
+## 3.1.0 (20-01-2026)
 
-### Novità: 2
-- [#37577](https://parermine.regione.emilia-romagna.it/issues/37577) Kettle - Refactor migrazione a GCP mantenendo S3
-- [#37184](https://parermine.regione.emilia-romagna.it/issues/37184) Nuovi parametri per la connessione all'object storage
+### Novità: 1
+- [#37168](https://parermine.regione.emilia-romagna.it/issues/37168) Ampliamento della ricerca su storico trasformazioni
