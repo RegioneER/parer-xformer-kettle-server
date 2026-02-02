@@ -1,4 +1,9 @@
 
+## 3.1.0 (20-01-2026)
+
+### Novità: 1
+- [#37168](https://parermine.regione.emilia-romagna.it/issues/37168) Ampliamento della ricerca su storico trasformazioni
+
 ## 3.0.0 (25-06-2025)
 
 ### Novità: 2

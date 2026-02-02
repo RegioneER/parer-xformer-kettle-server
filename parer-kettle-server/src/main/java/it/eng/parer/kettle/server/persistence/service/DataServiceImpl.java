@@ -40,7 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -410,16 +409,14 @@ public class DataServiceImpl implements DataService {
 
     // MEV 25024
     @Override
-    public List<StatoTrasformazione> getStoricoTrasformazioni(Date startDate, Date endDate, int numResults) {
+    public List<StatoTrasformazione> getStoricoTrasformazioni(Long idObject, String transformationName, Date startDate,
+            Date endDate, int numResults) {
         List<StatoTrasformazione> storicoTrasformazioni = new ArrayList<>();
 
-        List<MonExecTrasf> monitoraggi = monitoraggioRepository
-                .findByNmKsInstanceAndDtInizioTrasfBetweenAndTiStatoTrasfInOrderByDtInizioTrasfDesc(
-                        PageRequest.of(0, numResults), ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER),
-                        startDate, endDate, MonExecTrasf.STATO_TRASFORMAZIONE.ERRORE_TRASFORMAZIONE,
-
-                        MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_TERMINATA)
-                .getContent();
+        List<MonExecTrasf> monitoraggi = monitoraggioRepository.searchMonitoraggio(idObject, transformationName,
+                startDate, endDate, ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER), numResults,
+                MonExecTrasf.STATO_TRASFORMAZIONE.ERRORE_TRASFORMAZIONE,
+                MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_TERMINATA);
 
         for (MonExecTrasf monitoraggio : monitoraggi) {
             storicoTrasformazioni.add(getStato(monitoraggio));

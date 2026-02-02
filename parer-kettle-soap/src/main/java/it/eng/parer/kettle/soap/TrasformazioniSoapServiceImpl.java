@@ -17,21 +17,7 @@
 
 package it.eng.parer.kettle.soap;
 
-import it.eng.parer.kettle.model.AbstractEsito;
-import it.eng.parer.kettle.model.Esito;
-import it.eng.parer.kettle.model.EsitoCartella;
-import it.eng.parer.kettle.model.EsitoEsitenzaCartella;
-import it.eng.parer.kettle.model.EsitoJob;
-import it.eng.parer.kettle.model.EsitoListaParametri;
-import it.eng.parer.kettle.model.EsitoStatusCodaTrasformazione;
-import it.eng.parer.kettle.model.EsitoTransformation;
-import it.eng.parer.kettle.model.KettleCrudException;
-import it.eng.parer.kettle.model.KettleJob;
-import it.eng.parer.kettle.model.KettleTransformation;
-import it.eng.parer.kettle.model.Parametro;
-import it.eng.parer.kettle.model.StatoTrasformazione;
-import it.eng.parer.kettle.model.Trasformazione;
-import it.eng.parer.kettle.model.TrasformazioneException;
+import it.eng.parer.kettle.model.*;
 import it.eng.parer.kettle.service.DataService;
 import it.eng.parer.kettle.service.GestoreTrasformazioni;
 import java.util.List;
@@ -200,7 +186,8 @@ public class TrasformazioniSoapServiceImpl implements TrasformazioniSoapService 
     }
 
     @Override
-    public EsitoStatusCodaTrasformazione statusCodaTrasformazione(Date startDate, Date endDate, int numResults) {
+    public EsitoStatusCodaTrasformazione statusCodaTrasformazione(Long idObject, String transformationName,
+            Date startDate, Date endDate, int numResults) {
         EsitoStatusCodaTrasformazione esct = new EsitoStatusCodaTrasformazione();
 
         List<StatoTrasformazione> trasformazioniInCorso = dataService.ottieniTrasformazioniAttive();
@@ -209,13 +196,12 @@ public class TrasformazioniSoapServiceImpl implements TrasformazioniSoapService 
         List<StatoTrasformazione> trasformazioniInCoda = dataService.ottieniTrasformazioniInCoda();
         esct.setTrasformazioniInCoda(trasformazioniInCoda);
 
-        List<StatoTrasformazione> storicoTrasformazioni = dataService.getStoricoTrasformazioni(startDate, endDate,
-                numResults);
+        List<StatoTrasformazione> storicoTrasformazioni = dataService.getStoricoTrasformazioni(idObject,
+                transformationName, startDate, endDate, numResults);
         esct.setStoricoTrasformazioni(storicoTrasformazioni);
 
         esct.setEsitoSintetico(AbstractEsito.ESITO_SINTETICO.OK);
 
         return esct;
     }
-
 }

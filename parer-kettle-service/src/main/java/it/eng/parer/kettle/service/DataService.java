@@ -127,5 +127,6 @@ public interface DataService {
     // MEV25024
     public List<StatoTrasformazione> ottieniTrasformazioniInCoda();
 
-    public List<StatoTrasformazione> getStoricoTrasformazioni(Date startDate, Date endDate, int numResults);
+    public List<StatoTrasformazione> getStoricoTrasformazioni(Long idObject, String transformationName, Date startDate,
+            Date endDate, int numResults);
 }

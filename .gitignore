@@ -17,3 +17,5 @@
 /parer-kettle-soap/nb-configuration.xml
 /target/
 nbactions.xml
+.idea/
+.smarttomcat/
