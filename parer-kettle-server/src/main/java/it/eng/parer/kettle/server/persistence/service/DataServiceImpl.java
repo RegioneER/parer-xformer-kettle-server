@@ -275,6 +275,12 @@ public class DataServiceImpl implements DataService {
         return trasformazioniInCoda;
     }
 
+    @Override
+    public StatoTrasformazione getStatoTrasformazione(Long idPigObject) {
+        List<MonExecTrasf> monitoraggio = monitoraggioRepository.findByIdPigObjectOrderByDtFineTrasfDesc(idPigObject);
+        return !monitoraggio.isEmpty() ? getStato(monitoraggio.get(0)) : null;
+    }
+
     private static StatoTrasformazione getStato(MonExecTrasf monitoraggio) {
         StatoTrasformazione stato = new StatoTrasformazione();
         stato.setIdOggettoPing(monitoraggio.getIdPigObject());

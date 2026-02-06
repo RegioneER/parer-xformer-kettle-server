@@ -204,4 +204,20 @@ public class TrasformazioniSoapServiceImpl implements TrasformazioniSoapService 
 
         return esct;
     }
+
+    @Override
+    public EsitoStatusTrasformazione statusTrasformazione(Long idObject) {
+        EsitoStatusTrasformazione esitoStatusTrasformazione = new EsitoStatusTrasformazione();
+
+        StatoTrasformazione statoTrasformazione = dataService.getStatoTrasformazione(idObject);
+        if (statoTrasformazione != null) {
+            esitoStatusTrasformazione.setStatoTrasformazione(statoTrasformazione);
+            esitoStatusTrasformazione.setEsitoSintetico(AbstractEsito.ESITO_SINTETICO.OK);
+        } else {
+            esitoStatusTrasformazione.setStatoTrasformazione(null);
+            esitoStatusTrasformazione.setEsitoSintetico(AbstractEsito.ESITO_SINTETICO.KO);
+        }
+
+        return esitoStatusTrasformazione;
+    }
 }
