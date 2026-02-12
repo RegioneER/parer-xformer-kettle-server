@@ -43,6 +43,8 @@ public interface MonitoraggioRepository extends JpaRepository<MonExecTrasf, Long
     /* https://docs.spring.io/spring-data/jpa/docs/1.5.0.RC1/reference/html/jpa.repositories.html */
     MonExecTrasf findByIdPigObjectAndNmKsInstance(Long idPigObject, String nmKsInstance);
 
+    List<MonExecTrasf> findByIdPigObjectOrderByDtFineTrasfDesc(Long idPigObject);
+
     @Override
     public MonExecTrasf getOne(Long id);
 

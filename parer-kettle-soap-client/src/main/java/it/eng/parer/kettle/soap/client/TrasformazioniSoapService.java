@@ -137,4 +137,8 @@ public interface TrasformazioniSoapService {
     @WebResult(name = "EsitoStatusCodaTrasformazione")
     EsitoStatusCodaTrasformazione statusCodaTrasformazione(Long idObject, String transformationName, Date startDate,
             Date endDate, int numResults);
+
+    // MEV 39750
+    @WebResult(name = "EsitoStatusTrasformazione")
+    EsitoStatusTrasformazione statusTrasformazione(Long idObject);
 }
