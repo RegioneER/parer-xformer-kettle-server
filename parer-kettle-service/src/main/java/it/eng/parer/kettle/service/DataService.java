@@ -129,4 +129,7 @@ public interface DataService {
 
     public List<StatoTrasformazione> getStoricoTrasformazioni(Long idObject, String transformationName, Date startDate,
             Date endDate, int numResults);
+
+    // MEV 39750
+    public StatoTrasformazione getStatoTrasformazione(Long idPigObject);
 }
