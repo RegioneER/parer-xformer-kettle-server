@@ -74,7 +74,7 @@ public class TrasformazioniSoapServiceImpl implements TrasformazioniSoapService 
             }
 
         } catch (TrasformazioneException e) {
-            LOG.error("Trasformazione non eseguible", e);
+            LOG.error("Trasformazione non eseguibile", e);
             esito.setEsitoSintetico(Esito.ESITO_SINTETICO.KO);
             esito.setDettaglio(e.getMessage());
         } catch (Exception ex) {

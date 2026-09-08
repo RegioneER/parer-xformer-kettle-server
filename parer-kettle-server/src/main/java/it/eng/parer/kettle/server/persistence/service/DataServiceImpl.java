@@ -39,7 +39,9 @@ import org.pentaho.di.core.exception.KettleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,21 +66,21 @@ public class DataServiceImpl implements DataService {
     @Autowired
     private ReportRepository reportRepository;
 
+    @Autowired
+    private ApplicationContext appContext;
+
     // MEV34451 TODO, leggere da file.
     private final String[] blackListedParams = { "XF_KETTLE_DB_PASSWORD" };
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean accettaTrasformazione(Trasformazione trasformazione) {
-        int lunghezzaMassimacodaDiTrasformazione = Integer
-                .parseInt(ottieniParametroConfigurazione("transformation.queue"));
+        ThreadPoolTaskExecutor threadPoolTaskExecutor = appContext.getBean("threadPoolTaskExecutor",
+                ThreadPoolTaskExecutor.class);
+        int remainingRunners = threadPoolTaskExecutor.getMaxPoolSize() - threadPoolTaskExecutor.getActiveCount();
+        int remainingQueue = threadPoolTaskExecutor.getThreadPoolExecutor().getQueue().remainingCapacity();
 
-        long lunghezzaCorrenteCodaDiTrasformazione = monitoraggioRepository.countByNmKsInstanceAndTiStatoTrasfIn(
-                ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER),
-                MonExecTrasf.STATO_TRASFORMAZIONE.IN_CODA_TRASFORMAZIONE,
-                MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_IN_CORSO);
-
-        if (lunghezzaCorrenteCodaDiTrasformazione >= lunghezzaMassimacodaDiTrasformazione) {
+        if (remainingRunners + remainingQueue <= 0) {
             return false;
         }
 
@@ -86,7 +88,7 @@ public class DataServiceImpl implements DataService {
         MonExecTrasf monitoraggio = monitoraggioRepository.findByIdPigObjectAndNmKsInstance(idPigObject,
                 ottieniParametroConfigurazione(INSTANCE_NAME_PARAMETER));
         if (monitoraggio != null) {
-            // se è già in coda o in corso non accetare la trasformazione, ma potrebbe essere in stato di errore o già
+            // se è già in coda o in corso non accettare la trasformazione, ma potrebbe essere in stato di errore o già
             // trasformata
             if (monitoraggio.getTiStatoTrasf() == MonExecTrasf.STATO_TRASFORMAZIONE.IN_CODA_TRASFORMAZIONE
                     || monitoraggio.getTiStatoTrasf() == MonExecTrasf.STATO_TRASFORMAZIONE.TRASFORMAZIONE_IN_CORSO) {

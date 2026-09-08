@@ -65,11 +65,15 @@ public class KettleBeanConfig {
      */
     @Bean(name = "threadPoolTaskExecutor")
     public Executor threadPoolTaskExecutor() {
-        Integer numeroTrasformazioniConcorrenti = Integer
+        int numeroTrasformazioniConcorrenti = Integer
                 .parseInt(dataService.ottieniParametroConfigurazione("transformation.concurrency"));
+        int lunghezzaMassimaCodaDiTrasformazione = Integer
+                .parseInt(dataService.ottieniParametroConfigurazione("transformation.queue"));
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(numeroTrasformazioniConcorrenti);
         executor.setMaxPoolSize(numeroTrasformazioniConcorrenti);
+        executor.setQueueCapacity(lunghezzaMassimaCodaDiTrasformazione);
+        executor.setThreadNamePrefix("Kettle-Server-Worker-");
         return executor;
     }
 

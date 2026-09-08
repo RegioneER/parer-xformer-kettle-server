@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.eng.parer</groupId>
     <artifactId>parer-kettle</artifactId>
-    <version>3.2.1-SNAPSHOT</version>
+    <version>3.3.0</version>
     <packaging>pom</packaging>
     <parent>
         <groupId>it.eng.parer</groupId>
@@ -11,24 +11,24 @@
         <version>4.2.0</version>
     </parent>
     
-<scm>
-        <developerConnection>scm:git:https://github.com/RegioneER/parer-xformer-kettle-server.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
+  <scm>
+    <developerConnection>scm:git:https://github.com/RegioneER/parer-xformer-kettle-server.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
     
-<distributionManagement>
-        <repository>
-          <id>github</id>
-          <url>https://maven.pkg.github.com/RegioneER/parer-xformer-kettle-server</url>
-        </repository>      
-    </distributionManagement>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/RegioneER/parer-xformer-kettle-server</url>
+    </repository>
+  </distributionManagement>
 
-<repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/RegioneER/parer-framework-parerpom</url>           
-        </repository>
-     </repositories>
+  <repositories>
+    <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/RegioneER/parer-framework-parerpom</url>
+    </repository>
+  </repositories>
 
     <name>Parer Kettle</name>
     <description>Progetto che si occupa di implementare un'ambiente tomcat in cui effettuare le trasformazioni kettle.</description>
@@ -49,37 +49,37 @@
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-model</artifactId>
-                <version>3.2.1-SNAPSHOT</version>
+                <version>3.3.0</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-jpa</artifactId>
-                <version>3.2.1-SNAPSHOT</version>
+                <version>3.3.0</version>
             </dependency>  
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-service</artifactId>
-                <version>3.2.1-SNAPSHOT</version>
+                <version>3.3.0</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-soap</artifactId>
-                <version>3.2.1-SNAPSHOT</version>
+                <version>3.3.0</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-soap-client</artifactId>
-                <version>3.2.1-SNAPSHOT</version>
+                <version>3.3.0</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-rest</artifactId>
-                <version>3.2.1-SNAPSHOT</version>
+                <version>3.3.0</version>
             </dependency>
             <dependency>
                 <groupId>it.eng.parer</groupId>
                 <artifactId>parer-kettle-rest-client</artifactId>
-                <version>3.2.1-SNAPSHOT</version>
+                <version>3.3.0</version>
             </dependency>
             <!-- Logging -->
             <dependency>

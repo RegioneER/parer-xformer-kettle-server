@@ -1,21 +1,58 @@
-/parer-kettle-model/target/
-/parer-kettle-jpa/target/
-/parer-kettle-service/target/
-/parer-kettle-server/target/
-/parer-kettle-soap-client/target/
-/parer-kettle-server/nb-configuration.xml
-/parer-kettle-soap/target/
-/parer-kettle-rest/target/
-/parer-kettle-rest-client/target/
-/nb-configuration.xml
-/parer-kettle-jpa/nb-configuration.xml
-/parer-kettle-model/nb-configuration.xml
-/parer-kettle-rest-client/nb-configuration.xml
-/parer-kettle-rest/nb-configuration.xml
-/parer-kettle-service/nb-configuration.xml
-/parer-kettle-soap-client/nb-configuration.xml
-/parer-kettle-soap/nb-configuration.xml
-/target/
-nbactions.xml
+# Compiled artifacts
+**/target/
+*.jar
+*.war
+*.ear
+
+# IDE files
 .idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.project
+.classpath
+bin/
+nb-configuration.xml
+nbactions.xml
+.vscode/
+.DS_Store
+
+# NetBeans specific
+**/nb-configuration.xml
+nb-configuration.xml
+
+# Server / runtime
 .smarttomcat/
+tomcat.*/
+*.pid
+
+# Logs & temp
+*.log
+logs/
+temp/
+tmp/
+*.tmp
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Environment & secrets
+.env
+*.p12
+*.jks
+*.key
+*.secret
+application-*.properties
+
+# Maven local build
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+
+# Misc
+*.swp
+*.bak
+*~
